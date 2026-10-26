@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>متابعة الدروس</title>
+<meta name="theme-color" content="#0b1417">
+<meta name="description" content="متابعة المحاضرات الأسبوعية للمواد الدراسية">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f5f6;--card:#fff;--ink:#12303a;--mute:#5f7a83;--line:#d6e1e4;--accent:#0e5a6b;--on:#fff;--ok:#1f8a5b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1417;--card:#14232a;--ink:#e6f0f2;--mute:#8fa8b0;--line:#25393f;--accent:#4fc1d6;--on:#06222a;--ok:#4cc790}}
+:root[data-theme="dark"]{--bg:#0b1417;--card:#14232a;--ink:#e6f0f2;--mute:#8fa8b0;--line:#25393f;--accent:#4fc1d6;--on:#06222a;--ok:#4cc790}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Tajawal,system-ui,sans-serif;font-size:16px;line-height:1.5;padding-bottom:84px}
+main{max-width:520px;margin:0 auto;padding:16px}
+h1{font-size:24px;font-weight:800;margin:6px 0 2px}
+.sub{color:var(--mute);margin:0 0 14px;font-size:14px}
+.days{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px}
+.day{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px;padding:6px 14px;font:inherit;font-size:14px}
+.day.sel{background:var(--accent);color:var(--on);border-color:var(--accent);font-weight:700}
+.day.today:not(.sel){border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;display:flex;gap:14px;align-items:center}
+.num{flex:none;width:68px;height:78px;border-radius:6px 6px 6px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.num b{font-size:30px;line-height:1}.num small{font-size:11px;font-weight:500;opacity:.9}
+.info{flex:1;min-width:0}
+.name{font-weight:800;font-size:18px}
+.meta{color:var(--mute);font-size:13px;margin:2px 0 8px}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;border-radius:3px}
+.row{display:flex;gap:8px}
+button{font:inherit;cursor:pointer}
+.go{flex:1;background:var(--accent);color:var(--on);border:0;border-radius:10px;padding:10px;font-weight:700}
+.go:disabled{opacity:.5}
+.ghost{background:transparent;color:var(--mute);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+.tg{display:block;text-align:center;color:var(--accent);font-weight:700;padding:10px;text-decoration:none;border:1px dashed var(--accent);border-radius:12px;margin-top:4px}
+.open{display:block;margin-bottom:8px;color:var(--accent);font-weight:700;font-size:14px;text-decoration:none;border:1px solid var(--accent);border-radius:10px;padding:8px 10px}
+textarea{font:inherit;font-size:13px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px;width:100%;min-height:90px;direction:ltr;text-align:left}
+.gap{height:14px}
+.sum{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}.sum b{font-size:28px;font-weight:800}
+.pc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}.hd{display:flex;justify-content:space-between;align-items:baseline}.fin{color:var(--mute);font-size:13px;margin:2px 0 10px}
+.lock{text-align:center;padding-top:40px}.lock input{width:160px;font-size:24px;letter-spacing:8px}.lock input.wide{letter-spacing:0;font-size:16px;width:100%}
+input[type=password],input[type=text]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}input.wide{width:100%}
+.hold{position:relative;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.hold::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.35);transform:scaleX(0);transform-origin:right;transition:none;pointer-events:none}.hold.ghost::after{background:rgba(127,127,127,.3)}.hold.on::after{transform:scaleX(1);transition:transform 1.5s linear}
+.lr{padding:10px 0;border-top:1px solid var(--line);margin-top:8px}.li{display:flex;gap:10px;align-items:center;margin-bottom:8px}.ln{flex:none;width:32px;height:32px;border-radius:8px;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}.lt{flex:1;font-size:15px}.lt a{color:var(--ink);text-decoration:none;font-weight:700}.lr .hold{width:100%}
+.late{background:#b3261e;color:#fff;border-radius:8px;padding:1px 8px;font-size:12px;font-weight:700;white-space:nowrap}.okb{color:var(--ok);font-weight:800;font-size:13px;white-space:nowrap}.wk{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:2px 12px;font-size:13px;color:var(--mute);margin-bottom:6px}.fd .ln,.fd .lt{opacity:.55}
+.err{color:#d33;font-size:14px;margin-top:8px}.danger{background:#b3261e;color:#fff;border:0;border-radius:10px;padding:10px;width:100%;font-weight:700}
+.ls{margin-top:10px}.ls summary{color:var(--accent);font-weight:700;font-size:14px;cursor:pointer}.lsb{max-height:260px;overflow-y:auto;margin-top:6px}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:20px;text-align:center;color:var(--mute)}
+input[type=number],input[type=url]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px;width:72px;text-align:center}
+input[type=url]{width:100%;direction:ltr;text-align:left}
+.set h2{font-size:16px;margin:18px 0 8px}
+.line{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:16px;padding:4px 12px;font-size:14px}
+.chip.on{color:#fff;border-color:transparent}
+.dn{font-weight:700;font-size:14px;margin-bottom:4px}
+nav{position:fixed;inset:auto 0 0 0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;background:none;border:0;color:var(--mute);padding:8px;font-size:14px;border-radius:10px}
+nav button.on{color:var(--accent);font-weight:800}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav id="nav">
+<button data-tab="today">اليوم</button><button data-tab="prog">تقدمي</button><button data-tab="set">الإعدادات</button>
+</nav>
+<script>
+var K='lectures_v1';
+var NAMES=['رياضيات','قواعد','انكليزي','علوم','اجتماعيات'];
+var COLORS=['#c2410c','#7c3aed','#0369a1','#15803d','#b45309'];
+var ORDER=[6,0,1,2,3,4,5];
+var DN={6:'السبت',0:'الأحد',1:'الاثنين',2:'الثلاثاء',3:'الأربعاء',4:'الخميس',5:'الجمعة'};
+var EN='RhDKfvpM_6U bc-xTx3Q2Tk 0B-6eX7FOds JBerrDqArPM XwS2o-CRF00 xP_oXGdbANc VJY3DdiS9DM aGmvZV9_wN4 50j0j-0wDlM kc0l-06yzlw _2goLZ99MOc vf_yYVkuC88 JFIulw5CEA8 _IADKzk7eJQ o4Uj57gkq1Y cc4V1dDbrNE _t4Y9i9SYSo FtjdIGXBig0 xks90LSHw1Y FoW9BEM7WEU PLrKlVxGJS4 iV6yLDGHvAM swQYeJIYRG4 yR3fBQrG3K4 SS3yQVC3rpY iL9hE9e1JT8 ysQ9nWSGn9k lX4KobjZcOw BwW6Df0h5Oo 1ePt3fLRvgs yQ3unoYYoXg WT79Aw9ovoM IZPpYfmnmqs k8XedBHJs8o 1CQUYKypnMs vEsD9iJ1UQc tpl8I2C3ye4 QFaj5v_P6S8 eMUvL0lNjLs 3vZkGWYNnIg ZKRcMRXwEyA dmTZ0Gkp1OM GK50toxLqPE ejo7N09B460 x6OG0WOQhg0 0vJ1ZtBespY C5leLaf2iWw xuY0fc5P5W0 FXw29ZLWzEo fPQpxfQ1qXE U2zeC8v_NjU MhDDVhNsdm8 reVf0Z4sGI0 wZWjEKk9GYE -XsB2H3qrqc V3hpUrkv-ow 69eKdQZEjBk c5JZJTE1WQk E1UKcJRoy9U CkxVAeiQ0qk rtDmlhtyfPA uufwGpl4Jj8 OtXrL_N5iAQ ZLP5uGzhDnM aMZ9D3ys9eg yBLNs6jfppM tL4ywlszJRU fDdkmYzvcB0 w3eRrJrA3pc SKwIqKn2USY rXl-XS5ljKk JPAKDTq26nc Ywf7eP3YuGE Eso9S3HH6eg SDFbZS5pp_M au7pQpfIsJc vbyKoP26bLo vHkDC__TalU tVTTkY9TmnY ttRP1AT0qAg oX8vV5yIQ5k iIIUgiHJuJ0 lO74UOAGqy0 nVPexZ9fRHA ygKdIi18mdk w-_sx4TP-78 Is5nLixT_RE Xy3mPngw6xc aaXTYIXVLUw jzx8fsJkpW8 Rv2iQgkC4vo TGvewZt2yFc dIaCNu55aZI Lzq35KVcK9Y 0tJiccCCzpo CbEEEShHtW8 d0ccnizcwww JOZxrVH0L5c Mhe-_FUTJ6o 1NH9eqtoP40 G3AILJjqzsU LtUCz6MC7PQ aClFi--vyDE jOA15XRZSAk rH_zHCP7Oas Z2nJnldpAso QkZ4modzdHk B3HUSur1JZE 8ITx5xTo2fE lTKC-CitqWE ojKbopiJ_Mk PcLzFpanFlA rBc0hHS5JJA Fyf0TIRcybA Tq5v4euCIIc -dD-a_Y3vfo Wq4kwqT7-5Y vO6SciqyJNI a_J6YzeomVU -F_YLf8vboQ vw2R1F98aHU nxag3af46e4 1aiogRmDTLo FdEcZ3QFSug'.split(' ');
+var GR='79lHsELBjvs t-NbXn2L4Z0 _sGHHSdvHnk GT7SMaxXnEY _iIJHfRq6Yc zoZAOGNcM8Q 3HLnHSRZZsY -sMvVuLt598 FH15a5oxcg4 -W-9-nUylZg uN1RV8fZSMQ RRPjkhnnvbQ raMf1Bx61bM iPHDsbmA6xw meMSM5XA4ZI cP_LoOKSpUI cuU_NAkJ9ug nFNpMzLspbA 2fw1vagJ-Mw Y-Cn6tDyLMA JUJ_tzIP-gk t-SSw8Ofp0E J9ADd9Te9VE IikfqS6Tolo PQg-kOA00qY -eFgw0ueNfA BxZ6L6TMTPk EmCeaw3-ZO8 p3H8C9WaaME pDOJi4EkU0A yORm5_L3NbM mQbBTv5fqeg bFxH4qryN6Y 5sfjKB0-tUQ 89mgVH3JP2s t0mFQtDd1gg ckvzC8v3qmg 2edoPfvIcYk 83iLGu-i8rs UyX8ZrFcl1g br6St1XFnwY xtciM1IuEAc hFKVD-ssGcw'.split(' ');
+var SC='tguKyk2Q3-o B-VjjWFMuI4 fLOah7IFfs4 fLOah7IFfs4 0k6nMOMIiQ4 fPsvhwSW_cU GD26iOhZF_c bWfGVJSuym8 ZQ-tXFOGy_A F39xMz44z-k g5HFv29Rst8 dqOxEbtyjFg Jdcs8Hj8gAI ooo3cwjA2vQ IPqClRgvSUA 9s0n56cWYcg -aGXlhaRbPY G4NWaZVYx68 txVfYZK9_dU 5v7wsgcVdrA 4BsBs1FaZeM 43pxdp_YH_g bIN4jUm2X18 AMvD1gkArOI 4DegM8VJZTA NC1rmQHED10 6cLJy6V2JOQ ahT1Z_67jPI'.split(' ');
+var SO='ZNktPmETH2I Knn3sJAZ9i8 IyRVdcdQBwY J0eNJimYGUw nhma1fszNeQ FzBGXQ4xalk u8SdgNjH5oA HQVXGEbuoSg fmrLy9i9RZw znNgIC1yZUA rI62ALy4zb4 n7g4Da3VuBU LeOrqzcyjqc N2koBk4phHg e2WsLCrUDCc FQWgC0Pbr8E ZJ0xjam_piE YyuGg0IoXSw w6KzW2cNGG4 _fAhgzROPmw Tz5XSKdaxzs 9jD9MWms6GA _HAMWhSx5RU'.split(' ');
+var MA='586n-pgbPi0 rkjL4wsmLbk tKS0IN3zn-o _4Bk-wHScdI PW_z0G2njHY Xp9kPEMquMY rDJMV_D6P_M 1hZi6IyeHv8 U1htBpIuV5g a52sKLhc-7E 7K59nWholf8 JmyGa6zCVw8 q8GvUilHb0I lzrZHlTKpgA jJq4ww_ezrA F56A79xvwYI PDd8GEFwE9U HuK9qBiBin4 VbV1wNarIU8 EKbnBm8n_EY _TPBv1Q0IP4 nuUPUwOAfrU DORUEFyQltU _R_WO8eOSLY 9d8oHIKIHsc H6MwlLIJuqg xRjDjpLpjiw _yc82EqFdvg 7avDXp3_j0k rB4y04YqFJg Rr0aPnhlUWU vIbDg17AYRI ez86XzQkV_4'.split(' ');
+function sync(s){var T=tot(s),o=s.ok||[],c=0,f=-1,k,n=[];for(k=0;k<T;k++){n[k]=o[k]?1:0;if(n[k])c++;else if(f<0)f=k}s.ok=n;s.cnt=c;s.done=f<0?T:f}
+function setOk(i,k,v){var s=st.subs[i];if(!s||k<0||k>=tot(s))return;var od=(s.dt||[])[k];s.ok[k]=v?1:0;s.dt=s.dt||[];s.dt[k]=v?iso():null;if(v)s.last=iso();else{var m=null;s.dt.forEach(function(d){if(d&&(!m||d>m))m=d});if(m)s.last=m;else if(od&&od===s.last)s.last=null}sync(s)}
+function migrate(s){s.subs.forEach(function(x){x.dt=x.dt||[];x.from=x.from||'2026-10-07';if(!x.ok){x.ok=[];for(var k=0;k<x.done;k++)x.ok[k]=1}sync(x)});return s}
+function seed(s){if(!s.seedMa){var m=s.subs[0];if(!m.links.length){m.links=MA.map(function(id){return{u:'https://www.youtube.com/watch?v='+id,t:''}});m.done=Math.max(m.done,4)}s.seedMa=true}if(!s.seedSo){var o=s.subs[4];if(!o.links.length){o.links=SO.map(function(id){return{u:'https://www.youtube.com/watch?v='+id,t:''}});o.done=Math.max(o.done,4)}s.seedSo=true}if(!s.seedSc){var c=s.subs[3];if(!c.links.length){c.links=SC.map(function(id,k){return{u:'https://www.youtube.com/watch?v='+id,t:k===2?'حلقة 3 و 4 مدموجة':k===3?'نفس فيديو المحاضرة 3 (مدموجة)':''}});c.done=Math.max(c.done,2)}s.seedSc=true}if(!s.seedGr){var g=s.subs[1];if(!g.links.length){g.links=GR.map(function(id){return{u:'https://www.youtube.com/watch?v='+id,t:''}});g.done=Math.max(g.done,5)}s.seedGr=true}if(!s.seedEn){var e=s.subs[2];if(!e.links.length){e.links=EN.map(function(id){return{u:'https://www.youtube.com/watch?v='+id,t:''}});e.done=Math.max(e.done,6)}s.seedEn=true}return s}
+var OP={};var PAL=['#be185d','#0f766e','#4d7c0f','#9333ea','#b91c1c'],START=new Date(2026,9,7);
+function names(){st.subs.forEach(function(x,k){if(x.n)NAMES[k]=x.n;else x.n=NAMES[k];if(x.c)COLORS[k]=x.c;else{x.c=COLORS[k]||PAL[k%PAL.length];COLORS[k]=x.c}})}
+var st=migrate(seed(load()));names();save();
+var unlocked=false,rc=false,fg=false,lerr='';
+var tab=st.setup?'today':'set';
+var sel=new Date().getDay();
+function fresh(){var s={subs:[],sched:{},link:'',setup:false};
+ NAMES.forEach(function(n){s.subs.push({total:20,done:0,last:null,links:[],pl:''})});
+ s.sched={6:[0,3],0:[1,2],1:[],2:[3,4],3:[1,2],4:[0,4],5:[]};return s}
+function load(){try{var r=localStorage.getItem(K);if(r){var s=JSON.parse(r);if(s&&s.subs&&s.subs.length>=5){if(!s.setup&&!Object.keys(s.sched||{}).some(function(d){return s.sched[d].length}))s.sched=fresh().sched;s.subs.forEach(function(x){x.links=x.links||[];x.pl=x.pl||''});return s}}}catch(e){}return fresh()}
+function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+function tot(s){return s.links.length?s.links.length:s.total}
+function esc(x){return String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function parse(txt){var out=[];txt.split('\n').forEach(function(l){var m=l.match(/https?:\/\/[A-Za-z0-9\-._~:\/?#\[\]@!&'()*+,;=%]+/);if(m){var t=l.replace(m[0],'').replace(/^\s*\d+\s*[.)\-]\s*/,'').replace(/[\u2705\uD83C\uDF1F\uFE0F]+/g,'').replace(/^[\s|\-–:]+|[\s|\-–:]+$/g,'');out.push({u:m[0],t:t})}});return out}
+function toText(s){return s.links.map(function(x){return x.u+(x.t?' | '+x.t:'')}).join('\n')}
+function iso(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function ago(s){if(!s)return 'لم تبدأ بعد';var a=new Date(s+'T00:00:00'),b=new Date(iso()+'T00:00:00');
+ var n=Math.round((b-a)/864e5);if(n<=0)return 'آخر درس: اليوم';if(n===1)return 'آخر درس: أمس';if(n===2)return 'آخر درس: قبل يومين';return 'آخر درس: قبل '+n+' أيام'}
+function card(i){var s=st.subs[i],T=tot(s),fin=s.done>=T,count=s.cnt||0,p=T?Math.min(100,Math.round(count/T*100)):0;
+ var h='<div class="card"><div class="num" style="background:'+COLORS[i]+'">'+(fin?'<b>✓</b>':'<b>'+(s.done+1)+'</b><small>القادمة</small>')+'</div><div class="info"><div class="name">'+NAMES[i]+(!fin&&late(i,s.done)?' <span class="late">درس متأخر</span>':'')+'</div>';
+ h+='<div class="meta">أنجزت '+count+' من '+T+' · '+ago(s.last)+'</div><div class="bar"><i style="width:'+p+'%;background:'+COLORS[i]+'"></i></div>';
+ var x=s.links[s.done];if(!fin&&x)h+='<a class="open" href="'+esc(x.u)+'" target="_blank" rel="noopener">▶ افتح المحاضرة '+(s.done+1)+(x.t?' · '+esc(x.t):'')+'</a>';else if(!fin&&s.pl)h+='<a class="open" href="'+esc(s.pl)+'" target="_blank" rel="noopener">▶ افتح قائمة التشغيل (المحاضرة '+(s.done+1)+')</a>';h+='<div class="row">'+(fin?'<button class="go" disabled>انتهت المادة</button>':'<button class="go hold" data-h="mark" data-i="'+i+'" data-k="'+s.done+'">اضغط مطوّلاً: أنهيت المحاضرة '+(s.done+1)+'</button>')+'</div>';
+ return h+'</div></div>'}
+function today(){var t=new Date().getDay(),h='<h1>دروس اليوم</h1><div class="wk">'+weekLabel()+'</div><p class="sub">اختر اليوم وأنهِ المحاضرة القادمة لكل مادة.</p><div class="days">';
+ ORDER.forEach(function(d){h+='<button class="day'+(d===sel?' sel':'')+(d===t?' today':'')+'" data-a="day" data-d="'+d+'">'+DN[d]+'</button>'});
+ h+='</div>';var list=st.sched[sel]||[];
+ if(!list.length)h+='<div class="empty">لا توجد مواد في '+DN[sel]+'. حدّد مواد كل يوم من الإعدادات.</div>';
+ else list.forEach(function(i){h+=doneRows(i)+card(i)});
+ 
+ return h}
+function hash(x){var h=5381;x=String(x);for(var i=0;i<x.length;i++)h=((h<<5)+h+x.charCodeAt(i))|0;return 'h'+h}
+function norm(x){return String(x).trim().toLowerCase()}
+function lockView(){var h='<div class="lock"><h1>الإعدادات مقفلة</h1>';
+ if(!fg)h+='<p class="sub">اكتب الرمز لفتحها</p><input type="password" id="pin" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="الرمز"><div class="err">'+lerr+'</div><p><button class="go" style="width:160px" data-a="unlock">فتح</button></p><p><button class="ghost" data-a="forgot">نسيت الرمز؟</button></p>';
+ else h+='<p class="sub">'+esc(st.q)+'</p><input type="text" id="ans" class="wide" autocomplete="off" aria-label="الجواب"><div class="err">'+lerr+'</div><p><button class="go" style="width:160px" data-a="recover">تأكيد</button></p><p><button class="ghost" data-a="cancelfg">رجوع</button></p>';
+ return h+'</div>'}
+var MORE={};
+function lrow(i,k,x,d){var s=st.subs[i],lt=!d&&late(i,k),w=d&&s.dt&&s.dt[k]?wkOf(s.dt[k]):0;
+ var badge=d?'<span class="okb">✓ منجزة'+(w?' · أسبوع '+w:'')+'</span>':(lt?'<span class="late">درس متأخر</span>':'');
+ return '<div class="lr'+(d?' fd':'')+'"><div class="li"><span class="ln" style="background:'+COLORS[i]+'">'+(k+1)+'</span><span class="lt">'+(x&&x.u?'<a href="'+esc(x.u)+'" target="_blank" rel="noopener">▶ '+esc(x.t||'محاضرة '+(k+1))+'</a>':esc((x&&x.t)||'محاضرة '+(k+1)))+' '+badge+'</span></div><button class="hold '+(d?'ghost':'go')+'" data-h="'+(d?'unmark':'mark')+'" data-i="'+i+'" data-k="'+k+'">'+(d?'اضغط مطوّلاً لإلغاء الإنجاز':'اضغط مطوّلاً: تم الإنجاز')+'</button></div>'}
+function md(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+var DC={};
+function schedAt(ds){var h=st.hist;if(!h||!h.length)return st.sched;var r=h[0].s;for(var j=0;j<h.length;j++){if(h[j].d<=ds)r=h[j].s}return r}
+function recSched(old){if(!st.setup)return;var t=iso(),h=st.hist=st.hist||[];if(!h.length)h.push({d:'2026-10-07',s:old});var L=h[h.length-1],cur=JSON.parse(JSON.stringify(st.sched));if(L.d===t&&h.length>1)L.s=cur;else h.push({d:t,s:cur})}
+function remap(q,old,oldOk,oldDt){var pool={};old.forEach(function(x,k){(pool[x.u]=pool[x.u]||[]).push(k)});var ok=[],dt=[];q.links.forEach(function(x,k){var a=pool[x.u];if(a&&a.length){var j=a.shift();ok[k]=oldOk[j]?1:0;dt[k]=oldDt[j]||null}else{ok[k]=0;dt[k]=null}});q.ok=ok;q.dt=dt}
+function late(i,k){var s=st.subs[i];if(s.ok[k])return false;var c=DC[i];if(c===undefined){var t=md(new Date()),d=new Date(START),f=s.from?new Date(+s.from.slice(0,4),+s.from.slice(5,7)-1,+s.from.slice(8,10)):START;if(f>d)d=f;d=new Date(d);c=0;while(d<t){if((schedAt(iso(d))[d.getDay()]||[]).indexOf(i)>-1)c++;d.setDate(d.getDate()+1)}DC[i]=c}return k<c}
+function weekOf(d){d=md(d);var W2=new Date(2026,9,10);if(d<W2)return 1;return 2+Math.floor(Math.round((d-W2)/864e5)/7)}
+function wkOf(s){var p=s.split('-');return weekOf(new Date(+p[0],+p[1]-1,+p[2]))}
+function fmt(d){try{return d.toLocaleDateString('ar',{day:'numeric',month:'long'})}catch(e){return iso(d)}}
+function weekLabel(){var t=md(new Date()),n=weekOf(t),a,b;if(n===1){a=new Date(START);b=new Date(2026,9,9)}else{a=new Date(2026,9,10+7*(n-2));b=new Date(a);b.setDate(b.getDate()+6)}return 'الأسبوع '+n+' · '+fmt(a)+' – '+fmt(b)}
+function doneRows(i){var s=st.subs[i],t=iso(),h='',k;for(k=0;k<tot(s);k++){if(s.ok[k]&&s.dt&&s.dt[k]===t)h+='<div class="pc fd"><div class="li"><span class="ln" style="background:'+COLORS[i]+'">'+(k+1)+'</span><span class="lt"><b>'+NAMES[i]+'</b> · المحاضرة '+(k+1)+' <span class="okb">✓ منجزة</span></span></div><button class="hold ghost" style="width:100%" data-h="unmark" data-i="'+i+'" data-k="'+k+'">اضغط مطوّلاً لإلغاء الإنجاز</button></div>'}return h}
+function progV4(){var A=0,i,h;for(i=0;i<st.subs.length;i++)A+=st.subs[i].cnt||0;
+ h='<h1>تقدمي</h1><div class="wk">'+weekLabel()+'</div><div class="sum"><b>'+A+'</b> <span class="sub" style="margin:0">محاضرة أنجزتها</span></div>';
+ for(i=0;i<st.subs.length;i++){var s=st.subs[i],T=tot(s),n=MORE[i]||3,up=[],dn=[],k,lc=0;
+  for(k=0;k<T;k++){if(s.ok[k])dn.push(k);else{up.push(k);if(late(i,k))lc++}}
+  h+='<div class="pc"><div class="hd"><span class="name" style="color:'+COLORS[i]+'">'+NAMES[i]+'</span><span class="fin" style="margin:0">أنجزت '+dn.length+(lc?' · <span class="late">'+lc+' متأخر</span>':'')+'</span></div>';
+   var recent=dn.slice().sort(function(a,b){var da=(s.dt||[])[a]||'',db=(s.dt||[])[b]||'';return db.localeCompare(da)||b-a}),rec=recent.slice(0,2),old=dn.filter(function(q){return rec.indexOf(q)<0});
+  if(old.length){h+='<details class="ls" data-i="'+i+'"'+(OP[i]?' open':'')+'><summary>المنجزة السابقة ('+old.length+')</summary><div class="lsb">';old.forEach(function(q){h+=lrow(i,q,s.links[q],true)});h+='</div></details>'}
+  rec.forEach(function(q){h+=lrow(i,q,s.links[q],true)});
+  if(!up.length)h+='<div class="empty" style="margin-top:10px">أنهيت المادة 🎉</div>';
+  up.slice(0,n).forEach(function(q){h+=lrow(i,q,s.links[q],false)});
+  if(up.length>n)h+='<button class="ghost" style="width:100%;margin-top:8px" data-a="more" data-i="'+i+'">عرض المزيد</button>';
+  h+='</div>'}
+ return h}
+function prog(){return progV4()}
+function sett(){var h='<div class="set"><h1>الإعدادات</h1><p class="sub">تُضبط مرة واحدة فقط.</p><h2>روابط المحاضرات</h2><p class="sub">ألصق رابط كل محاضرة في سطر، بالترتيب: السطر الأول هو المحاضرة 1. يمكنك كتابة عنوان بعد الرابط (اختياري).</p>';
+ for(var i=0;i<st.subs.length;i++){var q=st.subs[i];h+='<input type="text" class="wide" data-a="nm" data-i="'+i+'" value="'+esc(NAMES[i])+'" aria-label="اسم المادة" style="text-align:right;font-weight:800;margin-bottom:6px;color:'+COLORS[i]+'"><textarea data-a="links" data-i="'+i+'" placeholder="https://youtu.be/...&#10;https://youtu.be/... | عنوان المحاضرة" aria-label="روابط '+NAMES[i]+'">'+esc(toText(q))+'</textarea><div class="sub" style="margin:8px 0 4px">أو رابط قائمة التشغيل كاملة (فتحها فقط، بدون ترتيب تلقائي)</div><input type="url" placeholder="https://youtube.com/playlist?list=..." value="'+esc(q.pl)+'" data-a="pl" data-i="'+i+'" aria-label="قائمة تشغيل '+NAMES[i]+'"><div class="line" style="margin-top:8px"><span class="sub" style="margin:0">'+(q.links.length?'عدد المحاضرات (من الروابط)':'عدد المحاضرات')+'</span><input type="number" min="1" value="'+tot(q)+'" data-a="total" data-i="'+i+'"'+(q.links.length?' disabled':'')+'></div><div class="gap"></div>'}
+ h+='<button class="ghost" style="width:100%" data-a="addsub">＋ إضافة مادة جديدة</button><h2>مواد كل يوم</h2>';
+ ORDER.forEach(function(d){h+='<div class="dn">'+DN[d]+'</div><div class="chips">';
+  for(var i=0;i<st.subs.length;i++){var on=(st.sched[d]||[]).indexOf(i)>-1;h+='<button class="chip'+(on?' on':'')+'" style="'+(on?'background:'+COLORS[i]:'')+'" data-a="tog" data-d="'+d+'" data-i="'+i+'">'+NAMES[i]+'</button>'}
+  h+='</div>'});
+ 
+ h+='<h2>قفل الإعدادات</h2>';
+ if(st.pin)h+='<p class="sub">القفل مفعّل.</p><button class="ghost" data-a="rmpin">إزالة القفل</button>';
+ else h+='<p class="sub">رمز من 4 أرقام، وسؤال سري تستعمله إذا نسيت الرمز.</p><input type="password" id="np" inputmode="numeric" maxlength="4" placeholder="الرمز" style="width:120px"><div class="gap" style="height:8px"></div><input type="text" id="nq" class="wide" placeholder="السؤال السري"><div class="gap" style="height:8px"></div><input type="text" id="na" class="wide" placeholder="الجواب"><div class="err">'+lerr+'</div><p><button class="go" style="width:100%" data-a="setpin">تفعيل القفل</button></p>';
+ h+='<h2>تصفير التقدم</h2><p class="sub">يرجع كل المواد إلى المحاضرة 1.</p>'+(rc?'<p class="err" style="margin:0 0 8px">سيُمسح تقدمك بكل المواد. هل أنت متأكد؟</p><button class="danger" data-a="resetyes">نعم، صفّر كل شي</button><button class="ghost" style="width:100%;margin-top:8px" data-a="resetno">إلغاء</button>':'<button class="danger" data-a="reset">تصفير كل التقدم</button>');
+ h+='<p style="margin-top:16px"><button class="go" style="width:100%" data-a="done">حفظ والبدء</button></p></div>';return h}
+function render(){DC={};var app=document.getElementById('app');
+ app.innerHTML=tab==='today'?today():tab==='prog'?prog():(st.pin&&!unlocked?lockView():sett());
+ document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.tab===tab)})}
+document.getElementById('nav').addEventListener('click',function(e){var b=e.target.closest('button');if(b){chk();tab=b.dataset.tab;if(tab!=='set'){unlocked=false;fg=false;lerr='';rc=false}render();window.scrollTo(0,0)}});
+var app=document.getElementById('app');
+app.addEventListener('click',function(){chk()},true);
+app.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!b.dataset.a)return;var a=b.dataset.a,i=+b.dataset.i,s=st.subs[i];
+ if(a==='addsub'){var nn=st.subs.length,nc=PAL[nn%PAL.length];st.subs.push({n:'مادة '+(nn+1),c:nc,total:10,done:0,last:null,links:[],pl:'',ok:[],dt:[],from:iso()});NAMES.push('مادة '+(nn+1));COLORS.push(nc);sync(st.subs[nn])}
+ else if(a==='more'){MORE[i]=(MORE[i]||3)+5}
+ else if(a==='unlock'){if(hash(document.getElementById('pin').value)===st.pin){unlocked=true;lerr=''}else lerr='الرمز غير صحيح'}
+ else if(a==='forgot'){fg=true;lerr=''}
+ else if(a==='cancelfg'){fg=false;lerr=''}
+ else if(a==='recover'){if(hash(norm(document.getElementById('ans').value))===st.a){unlocked=true;fg=false;st.pin='';st.q='';st.a='';lerr=''}else lerr='الجواب غير صحيح'}
+ else if(a==='setpin'){var np=document.getElementById('np').value.trim(),nq=document.getElementById('nq').value.trim(),na=document.getElementById('na').value;if(!/^\d{4}$/.test(np))lerr='الرمز لازم يكون 4 أرقام';else if(!nq||!norm(na))lerr='اكتب السؤال والجواب';else{st.pin=hash(np);st.q=nq;st.a=hash(norm(na));lerr=''}}
+ else if(a==='rmpin'){st.pin='';st.q='';st.a=''}
+ else if(a==='reset'){rc=true}
+ else if(a==='resetno'){rc=false}
+ else if(a==='resetyes'){st.subs.forEach(function(x){x.ok=[];x.dt=[];x.from=iso();x.last=null;sync(x)});rc=false}
+ else if(a==='day'){sel=+b.dataset.d}
+ else if(a==='tog'){var old=JSON.parse(JSON.stringify(st.sched)),d=b.dataset.d,l=st.sched[d]||[],k=l.indexOf(i);if(k>-1)l.splice(k,1);else l.push(i);st.sched[d]=l;recSched(old)}
+ else if(a==='done'){st.setup=true;tab='today'}
+ else return;
+ save();render()});
+app.addEventListener('change',function(e){var t=e.target,a=t.dataset.a,i=+t.dataset.i;
+ if(a==='total'){st.subs[i].total=Math.max(1,parseInt(t.value,10)||1);sync(st.subs[i])}
+ else if(a==='nm'){var nv=t.value.replace(/[<>"&]/g,'').trim();if(nv){st.subs[i].n=nv;NAMES[i]=nv}}
+ else if(a==='links'){var q=st.subs[i],ol=q.links,oo=q.ok.slice(),od=(q.dt||[]).slice();q.links=parse(t.value);if(ol.length&&q.links.length)remap(q,ol,oo,od);sync(q)}
+ else if(a==='pl'){var u=t.value.trim();st.subs[i].pl=/^https?:\/\//i.test(u)?u:''}
+ else return;
+ save();});
+var lastDay=iso();
+function chk(){var t=iso();if(t!==lastDay){lastDay=t;sel=new Date().getDay();render()}}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)chk()});
+window.addEventListener('focus',chk);window.addEventListener('pageshow',chk);
+var ht=null;
+function cancelHold(){clearTimeout(ht);ht=null;document.querySelectorAll('.hold.on').forEach(function(x){x.classList.remove('on')})}
+app.addEventListener('pointerdown',function(e){var b=e.target.closest('.hold');if(!b)return;b.classList.add('on');var h=b.dataset.h,i=+b.dataset.i,k=+b.dataset.k;clearTimeout(ht);ht=setTimeout(function(){ht=null;setOk(i,k,h==='mark'?1:0);save();render()},1500)});
+document.addEventListener('pointerup',cancelHold);document.addEventListener('pointercancel',cancelHold);
+app.addEventListener('pointerleave',function(e){if(e.target.classList&&e.target.classList.contains('hold'))cancelHold()},true);
+app.addEventListener('contextmenu',function(e){if(e.target.closest('.hold'))e.preventDefault()});
+app.addEventListener('toggle',function(e){var d=e.target;if(d&&d.tagName==='DETAILS'&&d.dataset.i!==undefined)OP[d.dataset.i]=d.open},true);
+ var originalSett=sett;
+ function backupSettings(){
+  return '<h2>النسخ الاحتياطي</h2><p class="sub">صدّر بياناتك كنص JSON أو الصق نسخة سابقة لاستعادتها. لا تُرفع البيانات إلى أي خادم.</p><button class="ghost" style="width:100%;margin-bottom:8px" data-a="backupExport">إنشاء نسخة JSON</button><textarea id="backupOut" readonly placeholder="ستظهر النسخة هنا للنسخ"></textarea><button class="ghost" style="width:100%;margin-top:8px" data-a="backupCopy">نسخ النسخة</button><div class="gap"></div><textarea id="backupIn" placeholder="الصق نص النسخة الاحتياطية هنا"></textarea><div id="backupStatus" class="sub" role="status" aria-live="polite"></div><button class="go" style="width:100%;margin-top:8px" data-a="backupImport">استيراد واستبدال الحالة</button><h2>تثبيت التطبيق</h2><p class="sub">بعد استضافة الملفات عبر HTTPS، ثبّته من قائمة المتصفح أو اختر «إضافة إلى الشاشة الرئيسية» من قائمة المشاركة في Safari.</p><button class="ghost" style="width:100%" data-a="installApp">تثبيت التطبيق</button><div id="installStatus" class="sub" role="status" aria-live="polite"></div>';
+ }
+ sett=function(){return originalSett().replace(/<\/div>$/,backupSettings()+'</div>')};
+ function backupSchedule(value,count){
+  if(!value||typeof value!=='object')throw new Error('جدول الأيام غير صالح');
+  var out={};
+  for(var d=0;d<=6;d++){
+   var row=value[d]||[];
+   if(!Array.isArray(row))throw new Error('أحد أيام الجدول غير صالح');
+   out[d]=[];
+   row.forEach(function(index){index=Number(index);if(!Number.isInteger(index)||index<0||index>=count)throw new Error('يوجد رقم مادة غير صالح في الجدول');if(out[d].indexOf(index)<0)out[d].push(index)});
+  }
+  return out;
+ }
+ function backupDate(value){if(typeof value!=='string'||!(/^\d{4}-\d{2}-\d{2}$/.test(value)))return null;var p=value.split('-').map(Number),d=new Date(p[0],p[1]-1,p[2]);return d.getFullYear()===p[0]&&d.getMonth()===p[1]-1&&d.getDate()===p[2]?value:null}
+ function backupUrl(value,optional){
+  var raw=String(value||'').trim();if(!raw&&optional)return '';
+  try{var u=new URL(raw);if(u.protocol==='https:'||u.protocol==='http:')return raw}catch(e){}
+  throw new Error('تحتوي النسخة على رابط غير صالح');
+ }
+ function validateBackup(text){
+  var root=JSON.parse(text),src=root&&root.format==='lectures_v1_backup'?root.state:root;
+  if(!src||typeof src!=='object'||!Array.isArray(src.subs)||src.subs.length<5||src.subs.length>100)throw new Error('صيغة النسخة غير معروفة أو عدد المواد غير صالح');
+  var next=JSON.parse(JSON.stringify(src));
+  next.subs=next.subs.map(function(x,i){
+   if(!x||typeof x!=='object')throw new Error('بيانات إحدى المواد غير صالحة');
+   var links=Array.isArray(x.links)?x.links:[],limit=Array.isArray(x.ok)?x.ok:[],dates=Array.isArray(x.dt)?x.dt:[];
+   if(links.length>10000)throw new Error('عدد روابط المحاضرات كبير جداً');
+   var cleanLinks=links.map(function(link){
+    if(!link||typeof link!=='object')throw new Error('بيانات رابط محاضرة غير صالحة');
+    return {u:backupUrl(link.u,false),t:String(link.t||'').slice(0,500)};
+   });
+   var total=Math.max(1,Math.min(10000,parseInt(x.total,10)||20)),done=Math.max(0,Math.min(cleanLinks.length||total,parseInt(x.done,10)||0)),ok=[],dt=[];
+   for(var k=0;k<(cleanLinks.length||total);k++){ok[k]=limit.length?((limit[k]===1||limit[k]===true)?1:0):(k<done?1:0);dt[k]=backupDate(dates[k])}
+   var name=String(x.n||NAMES[i]||('مادة '+(i+1))).replace(/[<>"&]/g,'').trim().slice(0,80);
+   var color=/^#[0-9a-f]{3,8}$/i.test(String(x.c||''))?x.c:(COLORS[i]||PAL[i%PAL.length]);
+   x.n=name||NAMES[i]||('مادة '+(i+1));x.c=color;x.total=total;x.links=cleanLinks;x.pl=backupUrl(x.pl||'',true);x.ok=ok;x.dt=dt;
+   x.done=ok.reduce(function(sum,v){return sum+(v?1:0)},0);x.cnt=x.done;x.last=backupDate(x.last);x.from=backupDate(x.from)||'2026-10-07';
+   return x;
+  });
+  if(!src.sched||typeof src.sched!=='object')throw new Error('جدول الأيام مفقود من النسخة');
+  next.sched=backupSchedule(src.sched,next.subs.length);next.setup=!!src.setup;
+  next.pin=typeof src.pin==='string'&&/^h-?\d+$/.test(src.pin)?src.pin:'';
+  next.q=typeof src.q==='string'?src.q.slice(0,300):'';
+  next.a=typeof src.a==='string'&&/^h-?\d+$/.test(src.a)?src.a:'';
+  if(!next.pin){next.q='';next.a=''}
+  if(Array.isArray(src.hist)){
+   next.hist=src.hist.filter(function(record){return record&&backupDate(record.d)&&record.s}).map(function(record){return {d:record.d,s:backupSchedule(record.s,next.subs.length)}});
+  }else next.hist=[];
+  return next;
+ }
+ function setBackupStatus(text,error){
+  var el=document.getElementById('backupStatus');if(el){el.textContent=text;el.className=error?'err':'sub'}
+ }
+ app.addEventListener('click',async function(e){
+  var b=e.target.closest('button[data-a]');if(!b)return;
+  if(b.dataset.a==='backupExport'){
+   var out=document.getElementById('backupOut');if(!out)return;
+   out.value=JSON.stringify({format:'lectures_v1_backup',version:1,exportedAt:new Date().toISOString(),state:st},null,2);
+   setBackupStatus('أُنشئت النسخة. انسخ النص واحفظه في مكان آمن.',false);out.focus();out.select();return;
+  }
+  if(b.dataset.a==='backupCopy'){
+   var field=document.getElementById('backupOut');if(!field||!field.value){setBackupStatus('أنشئ النسخة أولاً.',true);return}
+   try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(field.value);else{field.focus();field.select();if(!document.execCommand('copy'))throw new Error('copy failed')}setBackupStatus('تم نسخ النسخة الاحتياطية.',false)}catch(err){field.focus();field.select();setBackupStatus('تعذّر النسخ التلقائي؛ حدّد النص وانسخه يدوياً.',true)}return;
+  }
+  if(b.dataset.a==='backupImport'){
+   var input=document.getElementById('backupIn');if(!input||!input.value.trim()){setBackupStatus('الصق نص النسخة الاحتياطية أولاً.',true);return}
+   try{
+    var restored=validateBackup(input.value);
+    if(!window.confirm('سيتم استبدال بيانات التطبيق الحالية ببيانات النسخة الاحتياطية. هل تريد المتابعة؟'))return;
+    st=migrate(restored);NAMES.splice(0,NAMES.length,'رياضيات','قواعد','انكليزي','علوم','اجتماعيات');COLORS.splice(0,COLORS.length,'#c2410c','#7c3aed','#0369a1','#15803d','#b45309');names();save();MORE={};OP={};DC={};unlocked=true;tab=st.setup?'today':'set';render();setBackupStatus('تم استيراد النسخة واستبدال الحالة الحالية.',false);
+   }catch(err){setBackupStatus(err&&err.message?err.message:'تعذّر قراءة النسخة الاحتياطية.',true)}
+   return;
+  }
+  if(b.dataset.a==='installApp'){
+   var message=document.getElementById('installStatus');
+   if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;if(message)message.textContent='إذا وافقت، سيظهر التطبيق على الشاشة الرئيسية.'}
+   else if(message)message.textContent='على iPhone: افتح قائمة المشاركة في Safari ثم «إضافة إلى الشاشة الرئيسية». على بقية الأجهزة: اختر «تثبيت التطبيق» من قائمة المتصفح.';
+  }
+ });
+ var deferredInstallPrompt=null;
+ window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredInstallPrompt=e});
+ if('serviceWorker' in navigator&&location.protocol!=='file:')window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){})});
+render();
+</script>
+</body>
+</html>
